@@ -110,6 +110,9 @@ if __name__ == '__main__':
         out_path = sys.argv[4]
         if len(sys.argv) > 5:
             num_mapped_to_subsample = int(eval(sys.argv[5]))
+            if num_mapped_to_subsample == 0:
+                num_mapped_to_subsample = None
+                print("Will not subsample")
         else:
             num_mapped_to_subsample = 5 * 10**6
         if len(sys.argv) > 6:
