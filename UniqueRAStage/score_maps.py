@@ -220,7 +220,7 @@ def dense_non0_mean(x, parts_binned, max_0s=0.5, min_parts=10, noise_level=0.001
     # in order to avoid equalities
     x1 += numpy.random.normal(0, noise_level / parts_binned, len(x1))
     x1.sort()
-    d = int(q * len(x1))
+    d = int(q * len(x))
     diff = (x1[d:] - x1[:-d])
     if len(diff) == 0:
         # print("Got empty sequence?!? %d %d %d %d" % (len(x), len(x1), d, len(diff)))
