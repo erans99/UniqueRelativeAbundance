@@ -635,8 +635,8 @@ for pheno in cols:
         df_shap = pandas.read_pickle(os.path.join(out_path, 'top_phenotypes_xgb_shaps_%s.pkl' % pheno))
     df_all_shaps = df_all_shaps.append(df_shap, ignore_index=True)
 
-new_cols = ['Spearman correlation P value', 'Spearman correlation coefficient',
-            'Pearson correlation P value', 'Pearson correlation coefficient',
+new_cols = ['Spearman correlation P value', 'Spearman correlation coefficient', 'Spearman passed FDR correction',
+            'Pearson correlation P value', 'Pearson correlation coefficient', 'Pearson passed FDR correction'
             'Mean absolute shap value', 'Ridge regression coefficient', 'Species']
 
 cols = ['age', 'hba1c', 'bmi', 'bt__fasting_glucose', 'bt__fasting_triglycerides', 'bt__hdl_cholesterol']
@@ -645,7 +645,8 @@ for pheno in cols:
         atlas[pheno] = pandas.merge(atlas[pheno], df_all_shaps[df_all_shaps.pheno == pheno], on='species')
         atlas[pheno].drop(["pheno"], axis=1, inplace=True)
         atlas[pheno].sort_values("spear_pval", inplace=True)
-        atlas[pheno] = atlas[pheno][['spear_pval', 'spear', 'pears_pval', 'pears', 'shap', 'lr_coeff', 'species']]
+        atlas[pheno] = atlas[pheno][['spear_pval', 'spear', 'spear_pass_fdr', 'pears_pval', 'pears', 'pears_pass_fdr',
+                                     'shap', 'lr_coeff', 'species']]
         atlas[pheno].sort_values("spear_pval", inplace=True)
         atlas[pheno].columns = new_cols
         atlas[pheno].to_csv(os.path.join(atlas_path, 'final_atlas_%s.csv' % pheno))
