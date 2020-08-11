@@ -178,6 +178,16 @@ if not os.path.exists(os.path.join(out_path, 'IL_atlas.csv')):
         df_il = genes_spear(df_ura_il.loc[df_curr.index][top_occ_spec], df_curr, pheno)
         curr_df_il = curr_df_il.append(df_il[['pheno', 'species', 'spear_pval', 'spear', 'pears_pval', 'pears']],
                                        ignore_index=True)
+    curr_df_il['spear_pass_fdr'] = None
+    curr_df_il['pears_pass_fdr'] = None
+    for pheno in cols:
+        inds = curr_df_il.loc[curr_df_il.pheno == pheno].index
+        curr_df_il.loc[inds, 'spear_pass_fdr'] = statsmodels.stats.multitest.multipletests(
+            curr_df_il.loc[inds, 'spear_pval'].values, method='fdr_bh')[0]
+        curr_df_il.loc[inds, 'pears_pass_fdr'] = statsmodels.stats.multitest.multipletests(
+            curr_df_il.loc[inds, 'pears_pval'].values, method='fdr_bh')[0]
+        print("For %s %d of %d pass FDR" % (pheno, sum(curr_df_il.loc[inds, 'spear_pass_fdr']), len(inds)))
+
     curr_df_il.to_csv(os.path.join(out_path, 'IL_atlas.csv'))
 else:
     curr_df_il = pandas.read_csv(os.path.join(out_path, 'IL_atlas.csv'), index_col=0)
@@ -286,10 +296,7 @@ else:
     final_df1 = pandas.read_csv(os.path.join(out_path, 'il_us_spear_saturation.csv'), index_col=0)
 
 print("figure 5d-f")
-if LAB_DATA:
-    cols = ['age', 'bt__hba1c', 'bmi']
-else:
-    cols = ['age', 'hba1c', 'bmi']
+cols = ['age', 'hba1c', 'bmi']
 
 for pheno in cols:
     if os.path.exists(os.path.join(out_path, "cohort_size_%s.png" % pheno)):
