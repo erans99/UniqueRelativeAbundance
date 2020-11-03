@@ -13,13 +13,6 @@
     #GENOME2    100
     representatives = REPRESENTAIVE GENOMES FILE
     read_len = SINGLE END SEQUENCING LENGTH
-    ######################################
-    #TODO:
-    #GenusInfo = ${global_parameters:base_path}/Segata/strain_taxonomy.csv
-    #mash_path = ${global_parameters:base_path}/Bowtie_Segata/mash_4930/top_rep_4930.csv
-    #SGBdescription=${path}/SupplementaryTable8-SGBsDescription.csv
-    #path = ${global_parameters:base_path}/Segata
-    ######################################
 
 [global_parameters]
     base_path = /net/mraid08/export/jafar/Microbiome/Analyses/Unicorn
@@ -29,7 +22,7 @@
     qp_base_dir = ${path}/jobs
     bowtie_path = /net/mraid08/export/genie/Bin/Bowtie/bowtie2-2.3.4.2
     info_path = ${path}/fict_info
-    num_threads=32
+    num_threads =32
 
 [run_pipeline]
     stage1output = ${global_parameters:path}/doneIndexing.txt
