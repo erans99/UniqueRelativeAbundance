@@ -32,7 +32,6 @@ keephenotypes = {'age':'Age',
           }.keys()
 
 def explained_variance_binary(data,y_name,x_name):
-    # in probit the explained variance has to stay binary, so we cannot normalize it.
     data['alpha'] = (data['alpha'] - data['alpha'].mean()) / data['alpha'].std()
     res = logit(formula=y_name + ' ~ '+x_name,data=data).fit()
     beta = res.params[x_name]
@@ -61,11 +60,6 @@ def bootstrap_explained_variance(data,phenotype,clean_age_sex=True,times = 1000,
         alpha_clean = data['alpha'] - res.params['age'] * data['age'] - \
                          res.params['gender'] * data['gender']- res.params['Intercept']
         clean_data = pd.DataFrame(index=data.index, data={phenotype: data[phenotype], 'alpha': alpha_clean})
-    # if clean_age_sex:
-    #     res = ols(formula=phenotype + ' ~ age + gender ', data=data).fit()
-    #     phentype_clean = data[phenotype] - res.params['age'] * data['age'] - \
-    #                      res.params['gender'] * data['gender'] - res.params['Intercept']
-    #     clean_data = pd.DataFrame(index=phentype_clean.index, data={phenotype: phentype_clean, 'alpha': data['alpha']})
     else:
         res = ols(formula='alpha ~ gender ',data=data).fit()
         alpha_clean = data['alpha'] - res.params['gender']*data['gender'] - res.params['Intercept']
@@ -137,10 +131,7 @@ def main(cohort):
 
 if __name__=='__main__':
     for cohort in ['us','il__il_validation']:
-        try:
-            main(cohort)
-        except AssertionError:
-            pass
+        main(cohort)
         results=[]
         for phenotype in glob.glob(os.path.join(basepath, 'Alpha-explained-variance-%s*.csv'%cohort)):
             results.append(pd.read_csv(phenotype))
