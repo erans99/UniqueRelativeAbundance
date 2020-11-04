@@ -15,12 +15,12 @@ cohort = 'all-il' ##all-il/us
 input = 'us' if cohort == 'us' else 'il__il_validation'
 output_dir='/net/mraid08/export/jafar/Microbiome/Analyses/Unicorn/Analyses/Biome-Association-Index-%s'%cohort
 name='SGB_association_index'
-grm_file = os.path.join(output_dir, name + '_01%s'%presence_absence_mode)
+grm_file = os.path.join(output_dir, name)
 GCTA_EXE = '/net/mraid08/export/genie/Bin/gcta/gcta64'
 GRM_DIR = output_dir
 abundances_f =os.path.join(output_dir,'sgb__%s.csv'%input)
 covariates_f = os.path.join(output_dir,'covariates__%s.csv'%input)
-pheno_f = os.path.join(output_dir,'all_phenotypes_plus_high_hba1c__%s.csv'%input) #il__il_validation
+pheno_f = os.path.join(output_dir,'all_phenotypes_plus_high_hba1c__%s.csv'%input)
 gcta_output = os.path.join(output_dir,'gcta_%s.txt')
 jobs_output = os.path.join(output_dir,'jobs')
 phenotypes_thresholds=os.path.join(output_dir,'Figures - phenotype_ranges.csv')
