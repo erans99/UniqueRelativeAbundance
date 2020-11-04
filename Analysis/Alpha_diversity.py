@@ -3,13 +3,6 @@ import pandas as pd
 import os
 import numpy as np
 
-params = {'axes.labelsize': 10,
-          'axes.titlesize':8,
-          'text.fontsize': 8,
-          'legend.fontsize': 8,
-          'xtick.labelsize': 8,
-          'ytick.labelsize': 8}
-
 basepath='/net/mraid08/export/jafar/Microbiome/Analyses/Unicorn/Analyses/Alpha-Diversity'
 phenotypes_thresholds=os.path.join(basepath,'Figures - phenotype_ranges.csv')
 
