@@ -2,14 +2,13 @@ import numpy as np
 import pandas as pd
 import os,subprocess,sys,glob
 import scipy.linalg as la
-from PNPChip.PNPChip.ForPaper import kernel_utils
-from PNPChip.PNPChip.albi.albi_lib import fiesta_lib
+import kernel_utils
+from fiesta.albi.albi_lib import fiesta_lib #Fiesta - https://link.springer.com/chapter/10.1007/978-3-319-56970-3_15
 import datetime
 from mne.stats import fdr_correction
 from lib.SegalQueue.qp import qp, fakeqp
 from lib.addloglevels import sethandlers
 presence_absence_th = 0.0001
-presence_absence_mode = False
 
 cohort = 'all-il' ##all-il/us
 input = 'us' if cohort == 'us' else 'il__il_validation'
@@ -145,7 +144,7 @@ def run_biome_association_index(phenotype_name):
     del df_covariates['ID']
 
     with open(os.path.join(output_dir, '%s_LMM_results.txt'%phenotype_name), 'w') as handle:
-        handle.write('\t'.join(['Phenotype', 'microbiome-association index', '95% CI', 'P value',
+        handle.write('\t'.join(['Phenotype', 'microbiome-association index', '95% CI',
                                 'Sample size', 'V(G)', 'V(e)', 'mean'] + list(df_covariates.columns)) + '\n')
 
     is_outlier,log=get_outliers_by_phenotype(phenotype_name,df_pheno)
@@ -202,8 +201,6 @@ def run_biome_association_index(phenotype_name):
     assert (df_K_subset.index.isin(df_merged.index).all())
     assert (df_K_subset.index == df_merged.index).all()
     kernel = df_K_subset.values
-    #pvalues = rl_skat.RL_SKAT_Full_Kernel(kernel, covariates, add_intercept=False).test(np.row_stack(pheno_vec))
-    pvalues=[1]
     #compute CIs with FIESTA
     s,U = la.eigh(kernel)
     ind = np.argsort(s)[::-1]; s=s[ind]; U=U[:,ind]
@@ -214,7 +211,7 @@ def run_biome_association_index(phenotype_name):
     line =  '\t'.join([str(c) for c in [
                      phenotype_name,
                      '%0.3g'%(h2_reml), '%0.3g - %0.3g'%(CI[0][0], CI[0][1]),
-                     '%0.3g'%(pvalues[0]), pheno_vec.shape[0], '%0.3g'%(sig2g), '%0.3g'%(sig2e),
+                     pheno_vec.shape[0], '%0.3g'%(sig2g), '%0.3g'%(sig2e),
                      '%0.3f'%(intercept)] + ['%0.3g'%(f) for f in fixed_effects]]) + '\n'
 
     with open(os.path.join(output_dir, '%s_LMM_results.txt'%phenotype_name), 'a') as handle:
@@ -232,7 +229,7 @@ def prepare_data():
         obj.drop_duplicates(subset='client_id', keep='first', inplace=True)
         objbac = obj.loc[:, obj.columns.map(lambda x: ('|sSGB__' in x) | (x == 'client_id'))].set_index('client_id')
         objbac[objbac<presence_absence_th] = presence_absence_th
-        objbac.to_csv(os.path.join(output_dir,'sgb__us.csv'))
+        objbac.to_csv(os.path.join(output_dir,'sgb__%s.csv'%cohort[idx_cohort]))
         obj.loc[:,['age','gender','client_id']].set_index('client_id').to_csv(os.path.join(output_dir,
                                                                             'covariates__%s.csv'%cohort[idx_cohort]))
         obj.loc[:,['hba1c','bmi','client_id']].set_index('client_id').to_csv(os.path.join(output_dir,
@@ -242,7 +239,7 @@ def prepare_data():
         u'bowel_movement_frequency', u'bt__inr', u'bt__protein', u'bt__sgot', u'bt__albumin',
         u'bt__alkaline_phosphatase', u'bt__bilirubin', u'bt__tsh', u'currently_smokes',
         u'height', u'weight', u'client_id']].set_index('client_id').to_csv(os.path.join(output_dir,
-            'all_phenotypes__us.csv'))
+            'all_phenotypes__%s.csv'%cohort[idx_cohort]))
 
 def JoinAndParse():
     results = glob.glob(os.path.join(output_dir,'*_LMM_results.txt'))
