@@ -3,7 +3,7 @@ import pandas as pd
 import os,subprocess,sys,glob
 import scipy.linalg as la
 import kernel_utils
-from fiesta.albi.albi_lib import fiesta_lib #Fiesta - https://link.springer.com/chapter/10.1007/978-3-319-56970-3_15
+from fiesta.albi.albi_lib import fiesta_lib #Fiesta paper - https://link.springer.com/chapter/10.1007/978-3-319-56970-3_15 repository - https://github.com/cozygene/albi
 import datetime
 from mne.stats import fdr_correction
 from lib.SegalQueue.qp import qp, fakeqp
