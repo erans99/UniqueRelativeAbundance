@@ -8,9 +8,10 @@ np.set_printoptions(precision=4, linewidth=200)
 
 # K - kernel matrix (2d numpy array)
 # out_file - name of output file
-# num_snps - #SNPs used to estimate kinship (not sure what gcta uses it for). Not relevant if bed_nold_file is specified.
+# num_snps - #SNPs used to estimate kinship(not sure what gcta uses it for). Not relevant if bed_nold_file is specified.
 # K_index - the names of the individuals in the matrix K. Only relevant if we want to use variable #SNPs for every entry
-# bed_nold_file - name of Plink file with the SNPs that were used to estimate kinship. If not specified, the parameter num_snps will be used
+# bed_nold_file - name of Plink file with the SNPs that were used to estimate kinship. If not specified,
+# the parameter num_snps will be used
 def write_grm(K, out_file, num_snps=500000, K_index=None, bed_nold_file=None):
     # fill GRM columns 0,1,3
     n = K.shape[0]
