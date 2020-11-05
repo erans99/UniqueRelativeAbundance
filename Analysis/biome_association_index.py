@@ -115,7 +115,7 @@ def run_biome_association_index(phenotype_name):
     df_K['IID'] = df_K.index
     assert (df_K.index == df_pheno.index).all()
 
-    print ("Finished loading GRM matrix")
+    print("Finished loading GRM matrix")
     pheno_file = os.path.join(output_dir, '%s.phe' % phenotype_name)
     covariates_file = os.path.join(output_dir, '%s.cov' % phenotype_name)
 
