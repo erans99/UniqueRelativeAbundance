@@ -38,7 +38,8 @@ if __name__ == "__main__":
     
     base_path = ""
 
-    all_modules_list = pd.read_csv(os.path.join(base_path, 'kegg_db', 'list_of_modules.csv'))[['module_no', 'name']]
+    all_modules_list = pd.read_csv(os.path.join(base_path, 'kegg_db', 'list_of_modules.csv'))[
+        ['module_no', 'name', 'super_module', 'sub_super_module']]
     all_modules_list.set_index('module_no', inplace=True)
     
     # Creating a binary df from kegg genes and pathways/modules
@@ -87,6 +88,7 @@ if __name__ == "__main__":
 all_path = pd.concat(all_path).T
 for pheno in phenos:
     all_path[(pheno, 'd_pass')] = (all_path[(pheno, 'fdr')] < 0.05) * (-1)**(all_path[(pheno, 'pval')] < 0)
+all_path = all_path.T.sort_index().T
 all_path['num_phenos'] = (all_path[all_path.columns[all_path.columns.get_level_values(1) == 'fdr']] < 0.05).sum(1)
 all_path.sort_values("num_phenos", ascending=False, inplace=True)
 all_path.to_csv(os.path.join(base_path, 'insights_max', 'merged_pathways.csv'))
@@ -96,13 +98,16 @@ all_path[all_path.num_phenos >= 3][all_path.columns[all_path.columns.get_level_v
 all_module = pd.concat(all_module).T
 for pheno in phenos:
     all_module[(pheno, 'd_pass')] = (all_module[(pheno, 'fdr')] < 0.05) * (-1)**(all_module[(pheno, 'pval')] < 0)
+all_module = all_module.T.sort_index().T
 all_module['num_phenos'] = (all_module[all_module.columns[all_module.columns.get_level_values(1) == 'fdr']] < 0.05).\
     sum(1)
 all_module.sort_values("num_phenos", ascending=False, inplace=True)
 all_module[all_module.num_phenos >= 3][all_module.columns[all_module.columns.get_level_values(1) == 'd_pass']].to_csv(
     os.path.join(base_path, 'insights_max', 'modules_for_figure_6.csv'))
 
-all_module = pd.merge(all_module, all_modules_list, left_index=True, right_index=True)
+all_module['function'] = all_modules_list.loc[all_module.index, 'name'].values
+all_module['super_module'] = all_modules_list.loc[all_module.index, 'super_module'].values
+all_module['sub_super_module'] = all_modules_list.loc[all_module.index, 'sub_super_module'].values
 all_module.to_csv(os.path.join(base_path, 'insights_max', 'merged_modules.csv'))
 
-print()
+print("Done")
