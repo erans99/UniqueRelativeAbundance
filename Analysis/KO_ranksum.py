@@ -67,7 +67,7 @@ if __name__ == "__main__":
         rel_kos_pathways_df = pathways.copy()
         rel_kos_modules_df = modules.copy()
 
-        # partial pathways that appear in converted data
+        # partial pathways that appear in converted data - note its the same set for all phenotypes
         rel_kos_pathways_df = rel_kos_pathways_df[rel_kos_pathways_df.kegg_gene.isin(kegg.index)]
         rel_kos_pathways_df.set_index('kegg_gene', inplace=True)
 
