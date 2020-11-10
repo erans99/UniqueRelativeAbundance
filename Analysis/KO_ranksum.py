@@ -10,6 +10,7 @@ from statsmodels.stats.multitest import fdrcorrection
 #                        (1- ko is in the pathway/module; 0 - ko is not in pathway/module)
 # temp_K0_res - a matrix that shows ko's rank of p-value associated with a phenotype
 #               (i.e association between phenotype and a ko)
+# both 'less' and 'greater' are calculated for testing the direction of ranking
 def test_enrichment(temp_K0_res, rel_kos_df, rel_p):
     ko_enrichment_res = pd.DataFrame(index=rel_p, columns=['pval', 'natural_pval', 'fdr', 'in_fraction_of_KOs'])
 
