@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import glob
 from multiprocessing import Pool
-from BuildDB import make_fict_reads, map_fict_reads, analyse_fict_maps, unite_fict_maps,
+from BuildDB import make_fict_reads, map_fict_reads, analyse_fict_maps, unite_fict_maps
 from BuildDB import EatOrKeepSmallRepresentatives, buildRepresentatives, build_big_bowtie
 from BuildDB.createDistantConfigFile import createDistantConfigFile
 
