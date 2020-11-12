@@ -7,7 +7,8 @@ import configparser
 from multiprocessing import Pool
 
 
-def renameInputFastaFiles(SelectedSGBs,output_cores_dir,genomes_dir):
+def renameInputFastaFiles(inp):
+    SelectedSGBs, output_cores_dir, genomes_dir=inp
     all_contig_lens=[]
     all_contig_ids=[]
     for sgb in SelectedSGBs:
