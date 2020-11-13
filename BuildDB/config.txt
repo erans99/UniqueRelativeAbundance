@@ -1,24 +1,22 @@
 [user_parameters]
     #base_path = A DIRECTORY WHERE URA BUILD FILES WILL BE WRITTEN
-    base_path =
-
+    base_path = /Users/daphna/cluster2/users/daphna/rdna/analyses/URA
     #bowtie_path = BOWTIE EXECUTABLE PATH
-    bowtie_path =
-
+    bowtie_path = /Users/daphna/opt/anaconda3/bin
     #genomes_dir = PATH FOR REPRESENTATIVE SGB FASTA FILES
-    genomes_dir=
-
+    genomes_dir= /Users/daphna/cluster2/users/daphna/rdna/analyses/URA/ribosomes
     #representatives = CONVERSION FILE FROM REPRESENTATIVE GENOMES TO SGB
+    #                  THIS FILE SHOULD BE IN THE SAME DIRECTORY AS genomes_dir
     #representatives - tab separated file matching representative genome to SGB
     #Example format - no header:
     #GENOME1    10
     #GENOME2    100
-    representatives =
+    representatives = ${genomes_dir}/Representatives_to_SGBs.txt
 
     #read_len = SINGLE END SEQUENCING LENGTH
     read_len = 75
     #num_threads = NUMBER OF AVAILABLE THREADS
-    num_threads = 1
+    num_threads = 2
     #NUMBER OF UNIQUE READS PER BIN - RECOMMENDED = 100, CONSIDER LESS FOR SHORT <100K SEQUENCES
     unique_n = 100
 

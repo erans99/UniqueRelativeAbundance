@@ -8,7 +8,7 @@ from multiprocessing import Pool
 
 
 def renameInputFastaFiles(inp):
-    SelectedSGBs, output_cores_dir, genomes_dir = inp
+    SelectedSGBs, output_cores_dir, genomes_dir,base_path = inp
     print(SelectedSGBs)
     all_contig_lens = []
     all_contig_ids = []
@@ -34,7 +34,7 @@ def renameInputFastaFiles(inp):
                 all_contig_lens.append(len(record))
             SeqIO.write(coreContigs, coreFasta, 'fasta')
     pd.Series(index=all_contig_ids, data=all_contig_lens).to_csv( \
-        os.path.join(output_cores_dir, 'all_contigs.txt'), sep='\t', header=False)
+        os.path.join(base_path, 'all_contigs.txt'), sep='\t', header=False)
     print("Done writing core chunk fasta")
 
 
@@ -76,7 +76,8 @@ def run(SelectedSGBs, configFile):
     for chunk in range(0, len(SelectedSGBs), chunk_size):
         waiton.append((SelectedSGBs[chunk:chunk + chunk_size],
                        build_representatives['output_cores_dir'],
-                       build_representatives['genomes_dir']))
+                       build_representatives['genomes_dir'],
+                       build_representatives['base_path']))
     p.map(renameInputFastaFiles, waiton)
 
     buildByCore(SelectedSGBs['SGB'], build_representatives['output_fasta'],
