@@ -1,7 +1,7 @@
 [user_parameters]
-    base_path = WRITE HERE YOUR PATH FOR URA PARENT DIRECTORY
+    base_path = URA PARENT DIRECTORY
     sub_path = GIVE A NAME TO THE URA DB
-    bowtie_path = BOWTIE EXECUTABLE PATH
+    bowtie_path = BOWTIE2 INSTALLATION DIRECTORY PATH
     num_threads = NUMBER OF AVAILABLE THREADS
     #for genomes_dir - this path contains all the fasta files of the representatives -
     #the convention is that the fasta files will have the following format name:
@@ -51,7 +51,7 @@
     all_large_or_new_sgbs = ${run_pipeline:all_large_or_new_sgbs}
     output_fasta = ${output_dir}/SegataIndex.fa
     SGBdescription=${path}/SupplementaryTable8-SGBsDescription.csv
-    output_cores_dir = ${genomes_dir}
+    output_cores_dir = ${global_parameters:databases_path}/core
     chunksize=1500
     num_threads = ${global_parameters:num_threads}
 
