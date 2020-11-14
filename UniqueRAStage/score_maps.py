@@ -10,6 +10,9 @@ import pandas
 
 _log = logging.getLogger('URA')
 
+NUM_UNIQUES_IN_BASE_PART = 100
+MIN_PARTS_TO_ESTIMATE = 5
+
 
 def get_stats_single(binsfile, st_perfect):
     bins_dict = pickle.load(open(binsfile, 'rb'), encoding='bytes')
@@ -122,7 +125,7 @@ def calc_needed_parts(stats_perfect, exp_mean, exp_th):
 
 def analyse_stats_single(needed_parts, min_partial, stats_perfect, scoresfile):
     scores_dict = pickle.load(open(scoresfile, 'rb'), encoding='bytes')
-    min_exp = int(min_partial * needed_parts * 100)
+    min_exp = int(min_partial * needed_parts * NUM_UNIQUES_IN_BASE_PART)
     norm_all_fill = []
     num_not_used = 0
     for c in scores_dict.keys():
@@ -135,7 +138,7 @@ def analyse_stats_single(needed_parts, min_partial, stats_perfect, scoresfile):
             cnt_cs += 1
             if cnt_cs == needed_parts:
                 if expect > min_exp:
-                    norm_all_fill.append((100. * fill) / expect)
+                    norm_all_fill.append((NUM_UNIQUES_IN_BASE_PART * float(fill)) / expect)
                 elif expect != 0:
                     num_not_used += cnt_cs
                 fill = 0
@@ -143,14 +146,14 @@ def analyse_stats_single(needed_parts, min_partial, stats_perfect, scoresfile):
                 cnt_cs = 0
         if cnt_cs > 0:
             if expect > min_exp:
-                norm_all_fill.append((100. * fill) / expect)
+                norm_all_fill.append((NUM_UNIQUES_IN_BASE_PART * float(fill)) / expect)
             elif expect != 0:
                 num_not_used += cnt_cs
 
     if len(norm_all_fill) == 0:
         # print("  on blocks of %d parts (0 parts, %d bins not used)" % (needed_parts, num_not_used))
         return None
-    if len(norm_all_fill) < 5:
+    if len(norm_all_fill) < MIN_PARTS_TO_ESTIMATE:
         # s = stats.describe(norm_all_fill)
         # print("  on blocks of %d parts (%d parts, %d bins not used): mean %g (can't do dense mean or variance)" % \
         #       (needed_parts, len(norm_all_fill), num_not_used, s.mean))
