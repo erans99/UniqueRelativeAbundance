@@ -13,7 +13,7 @@ def _tryrm(f):
 
 
 def sam2bam(sam_infile, bam_outfile=None, sort_bam=False, index_bam=False, remove_sam_infile=False,
-            samtools_view_args=''):
+            samtools_view_args='',samtools_exe='samtools'):
     """
     Uses samtools to create a BAM file from a SAM file
     :param sam_infile: str, input SAM file
@@ -24,7 +24,6 @@ def sam2bam(sam_infile, bam_outfile=None, sort_bam=False, index_bam=False, remov
     :param samtools_view_args: str. Additional arguments to samtools view
     :return: Name of bam output file
     """
-    samtools_exe = "/net/mraid08/export/genie/Bin/SAMTools/samtools-1.9/bin/samtools"
     if bam_outfile is None:
         bam_outfile = sam_infile.replace('.sam', '') + '.bam'
     sort_bam = '| {} sort - '.format(samtools_exe) if sort_bam else ''
@@ -43,7 +42,9 @@ def sam_fname_to_bam_fname(sam_infile):
 
 
 def map(in_index_fname, in_fastq, out_sam_fname=None, out_std_err_fname=None, flags = "",
-        output_bam=False, sort_bam=False, sam2bam_args='', remove_sam=True, inp_is_fasta=False):
+        output_bam=False, sort_bam=False, sam2bam_args='', remove_sam=True, inp_is_fasta=False,
+        bowtie_mapper='bowtie2',
+        samtools_exe='samtools'):
     """
     Maps an input fastq file to a given index
     :param in_index_fname: pre-built bowtie index to map to
@@ -55,9 +56,10 @@ def map(in_index_fname, in_fastq, out_sam_fname=None, out_std_err_fname=None, fl
     :param sam2bam_args: str. Additional arguments in case of SAM to BAM conversion
     :param remove_sam: bool. Whether to remove sam file in case of SAM to BAM conversion
     :param inp_is_fasta: bool. Input file is fasta, not fastq
+    :param bowtie_mapper path for bowtie2 executable
+    :param samtools_exe path for samtools executale
     :return: SAM / BAM alignment file name
     """
-    bowtie_mapper = '/net/mraid08/export/genie/Bin/bowtie2-2.3.4/bowtie2'
     if out_sam_fname is None:
         out_sam_fname = os.path.join(os.path.splitext(in_fastq)[0]) + '.sam'
 
@@ -81,7 +83,7 @@ def map(in_index_fname, in_fastq, out_sam_fname=None, out_std_err_fname=None, fl
 
     if output_bam:
         output_file = sam2bam(out_sam_fname, bam_outfile=sam_fname_to_bam_fname(out_sam_fname), sort_bam=sort_bam,
-                              remove_sam_infile=remove_sam, samtools_view_args=sam2bam_args)
+                              remove_sam_infile=remove_sam, samtools_view_args=sam2bam_args,samtools_exe=samtools_exe)
 
     return output_file
 
@@ -122,7 +124,7 @@ def getNumMapped(sample, out_dir):
         return 0.
 
 
-def run_sample(sample, finput, out_dir, map_index_fname, min_sc_best):
+def run_sample(sample, finput, out_dir, map_index_fname, min_sc_best,bowtie_mapper='bowtie2',samtools_exe='samtools'):
     if os.path.isdir(out_dir):
         _log.info("Output results directory exists. Writing to it")
     else:
@@ -135,7 +137,8 @@ def run_sample(sample, finput, out_dir, map_index_fname, min_sc_best):
         open(finput) # in order to raise exception if the file does not exist, of is not readable
         out_sam_file = map(map_index_fname, finput, out_sam_fname=getSamOutput(sample, out_dir),
                            out_std_err_fname=getStats(sample, out_dir),
-                           flags="-a --no-unal --no-sq --no-hd --score-min L,%d,0" % min_sc_best)
+                           flags="-a --no-unal --no-sq --no-hd --score-min L,%d,0" % min_sc_best,
+                           bowtie_mapper=bowtie_mapper,samtools_exe=samtools_exe)
         map_perc = getStatsRate(sample, out_dir)
         num_mapped = getNumMapped(sample, out_dir)
         return out_sam_file, map_perc, num_mapped

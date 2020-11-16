@@ -119,10 +119,9 @@ def calc_needed_parts(stats_perfect, exp_mean, exp_th):
     # print("Got %d needed parts, vs %d in old method" % (needed_parts, old_needed))
     return needed_parts
 
-
-def analyse_stats_single(needed_parts, min_partial, stats_perfect, scoresfile):
+def analyse_stats_single(needed_parts, min_partial, stats_perfect, scoresfile,unique_n=100):
     scores_dict = pickle.load(open(scoresfile, 'rb'), encoding='bytes')
-    min_exp = int(min_partial * needed_parts * 100)
+    min_exp = int(min_partial * needed_parts * unique_n)
     norm_all_fill = []
     num_not_used = 0
     for c in scores_dict.keys():
@@ -135,7 +134,7 @@ def analyse_stats_single(needed_parts, min_partial, stats_perfect, scoresfile):
             cnt_cs += 1
             if cnt_cs == needed_parts:
                 if expect > min_exp:
-                    norm_all_fill.append((100. * fill) / expect)
+                    norm_all_fill.append((unique_n*1.0 * fill) / expect)
                 elif expect != 0:
                     num_not_used += cnt_cs
                 fill = 0
@@ -143,7 +142,7 @@ def analyse_stats_single(needed_parts, min_partial, stats_perfect, scoresfile):
                 cnt_cs = 0
         if cnt_cs > 0:
             if expect > min_exp:
-                norm_all_fill.append((100. * fill) / expect)
+                norm_all_fill.append((unique_n*1.0 * fill) / expect)
             elif expect != 0:
                 num_not_used += cnt_cs
 
@@ -166,7 +165,7 @@ def analyse_stats_single(needed_parts, min_partial, stats_perfect, scoresfile):
 
 
 def analyse_stats(outputf, strains, stats_perfect, num_perfect, num_parts, scores_dict_files, exp_th, min_partial,
-                  min_abund):
+                  min_abund,unique_n=100):
     exp_th = numpy.float(exp_th)
     min_partial = numpy.float(min_partial)
     abnds = {}
@@ -184,7 +183,7 @@ def analyse_stats(outputf, strains, stats_perfect, num_perfect, num_parts, score
         needed_parts = calc_needed_parts(stats_perfect[st], ((1.0 * num_perfect[st]) / num_parts[st]), exp_th)
         if needed_parts == 0:
             continue
-        res = analyse_stats_single(needed_parts, min_partial, stats_perfect[st], scoresfile)
+        res = analyse_stats_single(needed_parts, min_partial, stats_perfect[st], scoresfile,unique_n)
         if res is not None:
             cover[st], abnds[st] = res
 
@@ -233,17 +232,17 @@ def dense_non0_mean(x, parts_binned, max_0s=0.5, min_parts=10, noise_level=0.001
         return [0, x1[min_pos + d]], 0, -1
 
 
-def score_map_file(outputf, inputf, bins_dict_files, scores_dict_files, exp_th, min_partial, min_abund):
+def score_map_file(outputf, inputf, bins_dict_files, scores_dict_files, exp_th, min_partial, min_abund,unique_n=100):
     _log.info(("File %s started at " % os.path.basename(inputf)) + time.ctime())
     strains, stats_perfect, num_perfect, num_parts = get_stats(inputf, bins_dict_files)
     _log.info("Mid at " + time.ctime())
     analyse_stats(outputf, strains, stats_perfect, num_perfect, num_parts, scores_dict_files, exp_th, min_partial,
-                  min_abund)
+                  min_abund,unique_n)
     _log.info("Ended at " + time.ctime())
 
 
-def run_sample(sample, out_file, in_path, scores_dict_files, exp_th, min_partial, bins_dict_files, min_abund):
+def run_sample(sample, out_file, in_path, scores_dict_files, exp_th, min_partial, bins_dict_files, min_abund,unique_n=100):
     infile = glob.glob(os.path.join(in_path, sample + '.pkl'))[0]
-    score_map_file(out_file, infile, bins_dict_files, scores_dict_files, exp_th, min_partial, min_abund)
+    score_map_file(out_file, infile, bins_dict_files, scores_dict_files, exp_th, min_partial, min_abund,unique_n)
     _log.info('Done calculating abundance for sample %s' % sample)
     return out_file
