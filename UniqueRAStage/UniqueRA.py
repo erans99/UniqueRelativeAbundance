@@ -99,7 +99,7 @@ def main(finput, out_dir, read_len, num_mapped_to_subsample=None, min_mapped_to_
 def get_parameters_for_main(configFile):
     config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
     config.read(configFile)
-    databases_path = config['user_parameters']['databases_path']
+    base_path = config['user_parameters']['base_path']
     bowtie_mapper = config['user_parameters']['bowtie_mapper']
     samtools_exe = config['user_parameters']['samtools_exe']
     exp_th=int(config['run_pipeline']['exp_th'])
@@ -107,16 +107,16 @@ def get_parameters_for_main(configFile):
     keep_intermediate_files=eval(config['run_pipeline']['keep_intermediate_files'])
     unique_n=int(config['run_pipeline']['unique_n'])
     read_len = int(config['user_parameters']['read_len'])
-    in_path=config['run_pipeline']['in_path']
-    in_file_ext=config['run_pipeline']['in_file_ext']
+    in_path=config['user_parameters']['in_path']
+    in_file_ext=config['user_parameters']['in_file_ext']
     samples = glob.glob(os.path.join(in_path, "*.%s" % in_file_ext))
-    out_path = config['user_parameters']['out_path']
+    out_path = config['run_pipeline']['path']
     num_mapped_to_subsample = eval(config['run_pipeline']['num_mapped_to_subsample'])
     min_mapped_to_retain=int(config['run_pipeline']['min_mapped_to_retain'])
 
     for samp in samples:
         _log.info("Started %s at" % samp, time.ctime())
-        map_perc, num_used = main(samp, out_path, read_len, num_mapped_to_subsample, min_mapped_to_retain,databases_path=databases_path, run_type=run_type,
+        map_perc, num_used = main(samp, out_path, read_len, num_mapped_to_subsample, min_mapped_to_retain,databases_path=base_path, run_type=run_type,
                                   bowtie_mapper=bowtie_mapper,samtools_exe=samtools_exe,exp_th=exp_th,keep_intermediate_files=keep_intermediate_files,
                                   unique_n=unique_n)
         if num_used > 0:
