@@ -1,0 +1,29 @@
+[user_parameters]
+    #databases_path - path where all built URA databases are stored
+    #                 This should be the same as "base_path" in BuildDB.config.txt
+    databases_path -
+    #in_path - input directory, for fastq files
+    in_path =
+    #in_file_ext - fastq file extention (usually 'fq' or 'fastq', and if with '.gz')
+    in_file_ext =
+    #read_len - length of reads in fastq (works with 75, 100 or 150)
+    read_len =
+    #out_path - output directory, for temporary files and final output
+    out_path =
+    #bowtie_mapper - bowtie2 executable path
+    bowtie_mapper = bowtie2
+    #samtools_exe - samtools executable path
+    samtools_exe = samtools
+
+#Advanced parameters - these field have default values and normally should not be changed
+[run_pipeline]
+    #run_type - name of database - this should be the same as "sub_path" in BuildDB.config.txt
+    run_type = URA_DB
+    #num_mapped_to_subsample - maximal number of mapped reads to use when computing abundances, if 0 use all, default 5e6
+    num_mapped_to_subsample = 5000000
+    #min_mapped_to_retain - minimal number of mapped reads to use when computing abundances,
+    #                       will not compute if there are not enough reads, default 1e6
+    min_mapped_to_retain = 1000000
+    keep_intermediate_files = False
+    unique_n = 100
+    exp_th = 20
