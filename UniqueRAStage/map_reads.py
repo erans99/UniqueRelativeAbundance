@@ -1,6 +1,7 @@
 import glob
 import os
 import logging
+import config
 
 _log = logging.getLogger('URA')
 
@@ -24,7 +25,7 @@ def sam2bam(sam_infile, bam_outfile=None, sort_bam=False, index_bam=False, remov
     :param samtools_view_args: str. Additional arguments to samtools view
     :return: Name of bam output file
     """
-    samtools_exe = "/net/mraid08/export/genie/Bin/SAMTools/samtools-1.9/bin/samtools"
+    samtools_exe = config.SAM_TOOLS
     if bam_outfile is None:
         bam_outfile = sam_infile.replace('.sam', '') + '.bam'
     sort_bam = '| {} sort - '.format(samtools_exe) if sort_bam else ''
@@ -57,7 +58,7 @@ def map(in_index_fname, in_fastq, out_sam_fname=None, out_std_err_fname=None, fl
     :param inp_is_fasta: bool. Input file is fasta, not fastq
     :return: SAM / BAM alignment file name
     """
-    bowtie_mapper = '/net/mraid08/export/genie/Bin/bowtie2-2.3.4/bowtie2'
+    bowtie_mapper = config.BOWTIE_MAPPPER
     if out_sam_fname is None:
         out_sam_fname = os.path.join(os.path.splitext(in_fastq)[0]) + '.sam'
 
