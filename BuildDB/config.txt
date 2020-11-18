@@ -1,36 +1,41 @@
 [user_parameters]
-    base_path = WRITE HERE YOUR PATH FOR URA PARENT DIRECTORY
-    sub_path = GIVE A NAME TO THE URA DB
-    bowtie_path = BOWTIE EXECUTABLE PATH
-    num_threads = NUMBER OF AVAILABLE THREADS
-    #for genomes_dir - this path contains all the fasta files of the representatives -
-    #the convention is that the fasta files will have the following format name:
-    #SGB_XXX_YYY where XXX is the species number and YYY can be anything
-    genomes_dir = PATH FOR REPRESENTATIVE SGB FASTA FILES
-    #for representatives - tab separated file matching SGB to representative genome
+    #base_path = A DIRECTORY WHERE URA BUILD FILES WILL BE WRITTEN
+    base_path = /Users/daphna/cluster2/users/daphna/rdna/analyses/URA
+    #bowtie_path = BOWTIE EXECUTABLE PATH
+    bowtie_path = /Users/daphna/opt/anaconda3/bin
+    #genomes_dir = PATH FOR REPRESENTATIVE SGB FASTA FILES
+    genomes_dir= /Users/daphna/cluster2/users/daphna/rdna/analyses/URA/ribosomes
+    #representatives = CONVERSION FILE FROM REPRESENTATIVE GENOMES TO SGB
+    #                  THIS FILE SHOULD BE IN THE SAME DIRECTORY AS genomes_dir
+    #representatives - tab separated file matching representative genome to SGB
     #Example format - no header:
     #GENOME1    10
     #GENOME2    100
-    representatives = REPRESENTAIVE GENOMES FILE
-    read_len = SINGLE END SEQUENCING LENGTH
+    representatives = ${genomes_dir}/Representatives_to_SGBs.txt
+
+    #read_len = SINGLE END SEQUENCING LENGTH
+    read_len = 75
+    #num_threads = NUMBER OF AVAILABLE THREADS
+    num_threads = 2
+    #NUMBER OF UNIQUE READS PER BIN - RECOMMENDED = 100, CONSIDER LESS FOR SHORT <100K SEQUENCES
+    unique_n = 100
 
 [global_parameters]
-    base_path = /net/mraid08/export/jafar/Microbiome/Analyses/Unicorn
-    databases_path = ${base_path}/URA_DBs
-    sub_path = URA_database
-    path = ${databases_path}/${sub_path}
-    qp_base_dir = ${path}/jobs
-    bowtie_path = /net/mraid08/export/genie/Bin/Bowtie/bowtie2-2.3.4.2
+    mount_path = ${user_parameters:mount_path}
+    base_path = ${user_parameters:base_path}
+    sub_path = URA_DB
+    path = ${base_path}/${sub_path}
+    bowtie_path = ${user_parameters:bowtie_path}
     info_path = ${path}/fict_info
-    num_threads =32
+    num_threads = ${user_parameters:num_threads}
 
 [run_pipeline]
     stage1output = ${global_parameters:path}/doneIndexing.txt
     output_dir = ${global_parameters:path}
-    representatives = ${output_dir}/KnownLargeOrNew_reconstructed_REPRESENTATIVE.txt
-    genomes_dir = ${global_parameters:base_path}/Bowtie/Segata/RenamedRepresentativeGenomes
+    representatives = ${user_parameters:representatives}
+    genomes_dir = ${user_parameters:genomes_dir}
     all_large_or_new_sgbs = ${LargeOrNewGenus:all_large_or_new_sgbs}
-    qp_base_dir = ${global_parameters:qp_base_dir}
+    path = ${global_parameters:path}
     score_output = ${unite_fict_maps:scores_path}
     num_threads = ${global_parameters:num_threads}
     chucksize = 50
@@ -44,14 +49,14 @@
 
 [build_representatives]
     path = ${global_parameters:base_path}/Segata
-    qp_base_dir = ${global_parameters:qp_base_dir}
+    base_path = ${global_parameters:path}
     output_dir = ${global_parameters:path}
     representatives = ${run_pipeline:output_dir}
     genomes_dir = ${run_pipeline:genomes_dir}
     all_large_or_new_sgbs = ${run_pipeline:all_large_or_new_sgbs}
     output_fasta = ${output_dir}/SegataIndex.fa
     SGBdescription=${path}/SupplementaryTable8-SGBsDescription.csv
-    output_cores_dir = ${genomes_dir}
+    output_cores_dir = ${base_path}/genomes_annotated
     chunksize=1500
     num_threads = ${global_parameters:num_threads}
 
@@ -67,18 +72,16 @@
     ind_name = index
 
 [make_fict_reads]
-    qp_base_dir = ${global_parameters:qp_base_dir}
     path = ${global_parameters:path}
     singles_path = ${build_representatives:output_cores_dir}
     f_genome_list = ${build_representatives:representatives_output}
-    read_len = 75
+    read_len = ${user_parameters:read_len}
     fict_path = ${path}/fict_reads_${read_len}
     num_make_per_th = 50
     chunk_size = ${run_pipeline:chunk_size}
     info_path = ${global_parameters:info_path}
 
 [map_fict_reads]
-    qp_base_dir = ${global_parameters:qp_base_dir}
     read_len = ${make_fict_reads:read_len}
     path = ${global_parameters:path}
     fict_path = ${make_fict_reads:fict_path}
@@ -90,12 +93,11 @@
     ind_name = ${build_bowtie:ind_name}
 
 [analyse_fict_maps]
-    qp_base_dir = ${global_parameters:qp_base_dir}
     num_maps_per_th = 1
     path = ${global_parameters:path}
     map_path = ${map_fict_reads:map_res_path}
     bowtie_endings = *.sam
-    base_part_len = 100
+    base_part_len = ${user_parameters:unique_n}
     out_path = ${global_parameters:info_path}
 
 [remove_intermediate_files]
@@ -103,7 +105,6 @@
     map_files = ${map_fict_reads:map_res_path}
 
 [unite_fict_maps]
-    qp_base_dir = ${global_parameters:qp_base_dir}
     path = ${global_parameters:path}
     strains_info_path = ${global_parameters:info_path}
     scores_path = ${path}/scores

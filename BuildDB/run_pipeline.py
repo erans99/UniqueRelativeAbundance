@@ -4,10 +4,9 @@ import os
 import pandas as pd
 import glob
 from multiprocessing import Pool
-from BuildDB import make_fict_reads, map_fict_reads, analyse_fict_maps, unite_fict_maps,
+from BuildDB import make_fict_reads, map_fict_reads, analyse_fict_maps, unite_fict_maps
 from BuildDB import EatOrKeepSmallRepresentatives, buildRepresentatives, build_big_bowtie
 from BuildDB.createDistantConfigFile import createDistantConfigFile
-
 
 def get_all_SGBs(representatives, genomes_dir, all_large_or_new_sgbs):
     if not os.path.exists(representatives):
@@ -21,7 +20,7 @@ def get_all_SGBs(representatives, genomes_dir, all_large_or_new_sgbs):
         pd.Series(sgbs).to_csv(representatives, sep='\t', header=False)
     representatives_df = pd.read_table(representatives, header=None)
     representatives_df.columns = ['nameOfFile', 'SGB']
-    return representatives_df['SGB']
+    return representatives_df
 
 
 def sgb_run(sgb, configFile):
@@ -62,8 +61,8 @@ def run_on_SGBs(configFile):
         build_big_bowtie.run(configFile)
         with open(run_pipeline['stage1output'], 'w') as donefile:
             donefile.write('Done\n')
-    basedir = run_pipeline['qp_base_dir']
-    score_output = run_pipeline['score_output']
+    SelectedSGBs=SelectedSGBs['SGB']
+    basedir = run_pipeline['path']
     os.chdir(basedir)
     num_threads = eval(run_pipeline['num_threads'])
     print("Starting")
