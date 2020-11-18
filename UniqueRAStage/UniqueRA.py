@@ -5,11 +5,9 @@ import glob
 import time
 
 import map_reads, analyse_maps, score_maps
-
-DB_PATH = '/net/mraid08/export/genie/Microbiome/Data/Databases/URA_IndicesAndScores'
+import config
 
 _log = logging.getLogger('URA')
-CONCAT_LIM = 500
 
 
 def _tryrm(f):
@@ -20,8 +18,8 @@ def _tryrm(f):
 
 
 def main(finput, out_dir, read_len, num_mapped_to_subsample=None, min_mapped_to_retain=1000000,
-         databases_path=DB_PATH, run_type='LargeOrNewGenusSGBs', only_perfect=False, exp_th=20,
-         min_partial=0.5, min_sc_best=-40, keep_intermediate_files=False, min_abund=10**-4, num_uniq=100):
+         databases_path=config.DB_PATH, run_type=config.DB, num_uniq=config.NUM_UNIQ_IN_PART, only_perfect=False,
+         exp_th=20, min_partial=0.5, min_sc_best=-40, keep_intermediate_files=False, min_abund=10**-4):
     """
     Computes relative abundance by unique reads
     :param finput: SE fastq file
