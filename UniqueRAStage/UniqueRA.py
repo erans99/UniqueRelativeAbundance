@@ -21,7 +21,7 @@ def _tryrm(f):
 
 def main(finput, out_dir, read_len, num_mapped_to_subsample=None, min_mapped_to_retain=1000000,
          databases_path=DB_PATH, run_type='LargeOrNewGenusSGBs', only_perfect=False, exp_th=20,
-         min_partial=0.5, min_sc_best=-40, keep_intermediate_files=False, min_abund=10**-4):
+         min_partial=0.5, min_sc_best=-40, keep_intermediate_files=False, min_abund=10**-4, num_uniq=100):
     """
     Computes relative abundance by unique reads
     :param finput: SE fastq file
@@ -37,6 +37,7 @@ def main(finput, out_dir, read_len, num_mapped_to_subsample=None, min_mapped_to_
     :param min_sc_best: Minimum score of map top use (if not only perfect maps), float
     :param keep_intermediate_files: Whether to keep, or remove, intermidiate files used for estimation process, bool
     :param min_abund: threshold to cut minimum abundance estimation, float
+    :param num_uniq: number of uniq reads in base part of dictionaries, int
     :return: map_perc - the percenta of reads of the samples mapped to index
              num_reads - if negative, minus the number of reads that mapped, which did not pass the minimal needed
                          if positive, the number of reads used for computing relative abundances
@@ -80,7 +81,7 @@ def main(finput, out_dir, read_len, num_mapped_to_subsample=None, min_mapped_to_
     scores_dict_files = os.path.join(index_path, 'scores_%d' % read_len, 'dict_scores_%s')
     bins_dict_files = os.path.join(index_path, 'scores_%d' % read_len, 'dict_bins_%s')
     score_maps.run_sample(sample, out_score_file, out_dir, scores_dict_files, exp_th, min_partial, bins_dict_files,
-                          min_abund)
+                          min_abund, num_uniq)
 
     if not keep_intermediate_files:
         _log.info('Removing intermediate analysis file')
