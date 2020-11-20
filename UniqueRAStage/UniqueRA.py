@@ -104,7 +104,7 @@ if __name__ == '__main__':
         sys.exit(0)
     else:
         in_path = sys.argv[1]
-        samples = glob.glob(os.path.join(in_path, "*.%s" % sys.argv[2]))
+        samples = glob.glob(os.path.join(in_path, "*%s" % sys.argv[2]))
         read_len = int(sys.argv[3])
         out_path = sys.argv[4]
         if len(sys.argv) > 5:
