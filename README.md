@@ -14,6 +14,7 @@ In this repository, the following are used:
 * further packages for scripts under Analysis folder: skbio, numpy, scipy, fiesta, mne, datetime, statsmodels, socket, matplotlib
 
 Our code was tested to work on the following packages versions (but may very work with other versions too):
+
 python 3.7
 os,sys,glob,time,functools,pickle,math,configparser,multiprocessing,subprocess,datetime,socket - built in with python3.7 anaconda3 package
 bowtie 2
