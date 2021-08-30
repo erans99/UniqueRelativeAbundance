@@ -43,9 +43,9 @@ Once the *config.txt* file is ready, run from BuildDB folder:
 ```python pipeline_run.py```
 
 # Running URA 
-Edit *UniqueRelativeAbundance/UniqueRAStage/config.txt*
+Edit *UniqueRelativeAbundance/UniqueRAStage/config.py* - this requires a URA reference DB
 ```
-DB_PATH = './'  # put path to reference DBs here - this requires a URA reference DB
+DB_PATH = './'  # put path to reference DBs here - <base_path> from UniqueRelativeAbundance/BuildDB/config.txt
 DB = 'URA_DB'  # URA_DB is the default name if you build a new DB 
 ```    
 
