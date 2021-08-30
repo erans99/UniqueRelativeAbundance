@@ -26,15 +26,16 @@ The config.txt file contains documentation for the different parameters there.
 * bowtie_path = *BOWTIE EXECUTABLE PATH*
 * genomes_dir= *PATH FOR FOLDER CONTAINING REPRESENTATIVE GENOMES FASTA FILES*
 
-Under *genomes_dir* folder, you need to create a file named "Representatives_to_SGBs.txt"
+Under *genomes_dir* folder, you need to create a file named *"Representatives_to_SGBs.txt"*
 This file links the names of the genomes to number indetifiers that you choose.
-should be in the following format:
-Tab seperated no header:
+Should be in the following format
+Tab seperated no header
 GENOME_NAME    GENOME_ID
 . . .
 
 For example:
 ```cat Representatives_to_SGBs.txt```
+
 GENOME1    1
 GENOME2    2
 GENOME3    3
