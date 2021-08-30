@@ -38,4 +38,7 @@ GENOME_ID1    1
 GENOME_ID1    2
 GENOME_ID1    3
 ```
+
+Once the config.txt file is ready, run from BuildDB folder:
+```python pipeline_run.py```
     
