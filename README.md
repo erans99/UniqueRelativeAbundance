@@ -12,3 +12,31 @@ In this repository, the following are needed:
 * Tools: python 3, bowtie2, samtools
 * python packages for URA: logging, os, sys, glob, time, pandas, pysam, functools, pickle, math, configparser, multiprocessing, Bio, subprocess
 * further packages for scripts under Analysis folder: skbio, numpy, scipy, fiesta, mne, datetime, statsmodels, socket, matplotlib
+
+# URA example usage
+Running URA requires two steps:
+1) Building a reference DB - to be done only once
+2) Running URA - for each sample
+
+# Building a reference DB
+You can build your own DB given a set of genomes.
+Edit UniqueRelativeAbundance/BuildDB/config.txt
+The config.txt file contains documentation for the different parameters there.
+* base_path = *A DIRECTORY WHERE URA BUILD FILES WILL BE WRITTEN
+* bowtie_path = *BOWTIE EXECUTABLE PATH
+* genomes_dir= *PATH FOR FOLDER CONTAINING REPRESENTATIVE GENOMES FASTA FILES
+
+Under *genomes_dir* folder, you need to create a file named "Representatives_to_SGBs.txt"
+This file links the names of the genomes to number indetifiers that you choose.
+should be in the following format:
+Tab seperated no header:
+GENOME_NAME    GENOME_ID
+. . .
+
+For example:
+```cat Representatives_to_SGBs.txt```
+GENOME1    1
+GENOME2    2
+GENOME3    3
+    
+    
