@@ -8,10 +8,27 @@ This Git includes 4 directories:
 
 
 # Installation requirements
-In this repository, the following are needed:
+In this repository, the following are used:
 * Tools: python 3, bowtie2, samtools
 * python packages for URA: logging, os, sys, glob, time, pandas, pysam, functools, pickle, math, configparser, multiprocessing, Bio, subprocess
 * further packages for scripts under Analysis folder: skbio, numpy, scipy, fiesta, mne, datetime, statsmodels, socket, matplotlib
+
+Our code was tested to work on the following packages versions (but may very work with other versions too):
+python 3.7
+os,sys,glob,time,functools,pickle,math,configparser,multiprocessing,subprocess,datetime,socket - built in with python3.7 anaconda3 package
+bowtie 2
+samtools 1.10
+logging 0.5.1.2
+pandas 1.0.1
+pysam 0.15.4
+Bio 1.76
+#skbio 0.5.6
+#fiesta
+#mne
+#numpy 1.18.1
+#scipy 1.4.1
+#statsmodels 0.11.0
+#matplotlib 3.4.2
 
 # URA example usage
 Running URA requires two steps:
