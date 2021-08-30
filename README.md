@@ -48,3 +48,13 @@ Edit *UniqueRelativeAbundance/UniqueRAStage/config.txt*
 DB_PATH = './'  # put path to reference DBs here - this requires a URA reference DB
 DB = 'URA_DB'  # URA_DB is the default name if you build a new DB 
 ```    
+
+Run UniqueRA.py on your sample. Here is a command example:
+```python UniqueRAStage.py <input_fastq_dir> <fastq_file|fastq_extention> <read_length> <out_dir> <max_reads> <min_reads>")
+        print("<in_dir> input directory, for fastq files")
+        print("<in_file_ext> fastq file extention (usually 'fq' or 'fastq')")
+        print("<read_length> length of reads in fastq (works with 75, 100 or 150)")
+        print("<out_dir> output directory, for temporary files and final output")
+        print("<max_reads> maximal number of mapped reads to use when computing abundances, if 0 use all, default 5e6")
+        print("<min_reads> minimal number of mapped reads to use when computing abundances, ")
+        print("            will not compute if there are not enough reads, default 1e6")
