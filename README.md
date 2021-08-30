@@ -28,16 +28,13 @@ The config.txt file contains documentation for the different parameters there.
 
 Under *genomes_dir* folder, you need to create a file named *"Representatives_to_SGBs.txt"*
 This file links the names of the genomes to number indetifiers that you choose.
-Should be in the following format
-Tab seperated no header
-GENOME_NAME    GENOME_ID
-. . .
+It needs to be tab seperated without a header
 
 For example:
 ```cat Representatives_to_SGBs.txt```
 
-GENOME1    1
-GENOME2    2
-GENOME3    3
+```GENOME1\t1
+GENOME2\t2
+GENOME3\t3```
     
     
