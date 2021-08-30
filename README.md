@@ -33,7 +33,8 @@ It needs to be tab seperated without a header
 For example:
 ```cat Representatives_to_SGBs.txt```
 
-```GENOME1\t1
+```
+GENOME1\t1
 GENOME2\t2
 GENOME3\t3```
     
