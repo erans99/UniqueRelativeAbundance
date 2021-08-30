@@ -44,8 +44,8 @@ Once the *config.txt* file is ready, run from BuildDB folder:
 
 # Running URA 
 This steps requires a ready URA reference DB (see above).
-Edit UniqueRelativeAbundance/UniqueRAStage/config.txt
-URA_DB
+Edit *UniqueRelativeAbundance/UniqueRAStage/config.txt*
+```
 DB_PATH = './'  # put path to DBs here 
 DB = 'URA_DB'  # URA_DB is the default name if you build a new DB 
-    
+```    
