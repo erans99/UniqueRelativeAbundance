@@ -49,7 +49,7 @@ DB_PATH = './'  # put path to reference DBs here - this requires a URA reference
 DB = 'URA_DB'  # URA_DB is the default name if you build a new DB 
 ```    
 
-Run UniqueRA.py on your sample. Here is a command example:
+Run *UniqueRA.py* on your sample. Here is a command example:
 
 ```python UniqueRAStage.py input_fastq_dir fastq_file 75 output_dir```
 * <in_dir> input directory, where fastq file is located
