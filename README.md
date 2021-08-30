@@ -34,8 +34,8 @@ For example:
 ```cat Representatives_to_SGBs.txt```
 
 ```
-GENOME1    1
-GENOME2    2
-GENOME3    3
+GENOME_ID1    1
+GENOME_ID1    2
+GENOME_ID1    3
 ```
     
