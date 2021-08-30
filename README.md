@@ -30,7 +30,7 @@ Bio 1.76,
 #numpy 1.18.1,
 #scipy 1.4.1,
 #statsmodels 0.11.0,
-#matplotlib 3.4.2,
+#matplotlib 3.4.2
 
 # URA example usage
 Running URA requires two steps:
