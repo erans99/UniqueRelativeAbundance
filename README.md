@@ -39,6 +39,13 @@ GENOME_ID1    2
 GENOME_ID1    3
 ```
 
-Once the config.txt file is ready, run from BuildDB folder:
+Once the *config.txt* file is ready, run from BuildDB folder:
 ```python pipeline_run.py```
+
+# Running URA 
+This steps requires a ready URA reference DB (see above).
+Edit UniqueRelativeAbundance/UniqueRAStage/config.txt
+URA_DB
+DB_PATH = './'  # put path to DBs here 
+DB = 'URA_DB'  # URA_DB is the default name if you build a new DB 
     
