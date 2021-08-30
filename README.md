@@ -22,9 +22,9 @@ Running URA requires two steps:
 You can build your own DB given a set of genomes.
 Edit UniqueRelativeAbundance/BuildDB/config.txt
 The config.txt file contains documentation for the different parameters there.
-* base_path = *A DIRECTORY WHERE URA BUILD FILES WILL BE WRITTEN
-* bowtie_path = *BOWTIE EXECUTABLE PATH
-* genomes_dir= *PATH FOR FOLDER CONTAINING REPRESENTATIVE GENOMES FASTA FILES
+* base_path = *A DIRECTORY WHERE URA BUILD FILES WILL BE WRITTEN*
+* bowtie_path = *BOWTIE EXECUTABLE PATH*
+* genomes_dir= *PATH FOR FOLDER CONTAINING REPRESENTATIVE GENOMES FASTA FILES*
 
 Under *genomes_dir* folder, you need to create a file named "Representatives_to_SGBs.txt"
 This file links the names of the genomes to number indetifiers that you choose.
