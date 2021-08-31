@@ -3,7 +3,7 @@ standalone version of URA
 This Git includes 4 directories:
 * Analysis - code used for predictions and atlas building, given URA output and phenotype data.
 * BuildDB - code to build your own URA indices and scores for running the UniqueRAStage, of your own set of species.
-* TestingsDBs - the DBs for running and debugging UniqueRAStage, for a subset of 6 species.
+* TestingsDBs - the DBs for running and debugging UniqueRAStage, on 75 bps samples, for a subset of 6 species.
 * UniqueRAStage - the actual code of computing URA for a single end fastq file.
 
 
@@ -24,13 +24,13 @@ logging 0.5.1.2,
 pandas 1.0.1,
 pysam 0.15.4,
 Bio 1.76,
-#skbio 0.5.6,
-#fiesta,
-#mne,
-#numpy 1.18.1,
-#scipy 1.4.1,
-#statsmodels 0.11.0,
-#matplotlib 3.4.2
+skbio 0.5.6,
+fiesta,
+mne,
+numpy 1.18.1,
+scipy 1.4.1,
+statsmodels 0.11.0,
+matplotlib 3.4.2
 
 # URA example usage
 Running URA requires two steps:
@@ -54,8 +54,8 @@ For example:
 
 ```
 GENOME_ID1    1
-GENOME_ID1    2
-GENOME_ID1    3
+GENOME_ID2    2
+GENOME_ID3    3
 ```
 
 Once the *config.txt* file is ready, run from BuildDB folder:
