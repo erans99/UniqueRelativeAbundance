@@ -70,9 +70,9 @@ DB = 'URA_DB'  # URA_DB is the default name if you build a new DB
 
 Run *UniqueRA.py* on your sample. Here is a command example:
 
-```python UniqueRAStage.py input_fastq_dir fastq_file read_length output_dir```
+```python UniqueRAStage.py <input_fastq_dir> <fastq_file> <read_length> <output_dir>```
 * <input_fastq_dir> input directory, where fastq file is located
 * <fastq_file> can be a specific fastq file or an extention (usually 'fq' or 'fastq')
-* <read_length> fastq read length used for building the reference DB - default DB build read length is 75
+* <read_length> sequensting read length used for building the reference DB - default DB build read length is 75
 * <output_dir> output directory, for temporary files and final output
       
